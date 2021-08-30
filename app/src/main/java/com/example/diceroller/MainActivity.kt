@@ -3,6 +3,7 @@ package com.example.diceroller
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 
 /**
@@ -27,18 +28,28 @@ class MainActivity : AppCompatActivity() {
         // 1つ目に6面のサイコロを作成し，振ります．
         val firstDice = Dice(6)
         val firstDiceRoll = firstDice.roll()
+        val diceImage: ImageView = findViewById(R.id.imageView)
 
         // 画面上にある数字を出た目に更新します．
-        val firstResultTextView: TextView = findViewById(R.id.textView1)
-        firstResultTextView.text = firstDiceRoll.toString()
+        val drawableResource = when (firstDiceRoll) {
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
+        }
 
-        // 2つ目に6面のサイコロを作成し，振ります．
-        val secondDice = Dice(6)
-        val secondDiceRoll = secondDice.roll()
+        diceImage.setImageResource(drawableResource)
+        diceImage.contentDescription = firstDiceRoll.toString()
 
-        // 画面上にある数字を出た目に更新します．
-        val secondResultTextView: TextView = findViewById(R.id.textView2)
-        secondResultTextView.text = secondDiceRoll.toString()
+//        // 2つ目に6面のサイコロを作成し，振ります．
+//        val secondDice = Dice(6)
+//        val secondDiceRoll = secondDice.roll()
+//
+//        // 画面上にある数字を出た目に更新します．
+//        val secondResultTextView: TextView = findViewById(R.id.textView2)
+//        secondResultTextView.text = secondDiceRoll.toString()
 
     }
 }
