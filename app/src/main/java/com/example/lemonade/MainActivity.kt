@@ -66,11 +66,14 @@ class MainActivity : AppCompatActivity() {
         lemonImage = findViewById(R.id.image_lemon_state)
         setViewElements()
         lemonImage!!.setOnClickListener {
+            clickLemonImage()
+            setViewElements()
             // TODO: call the method that handles the state when the image is clicked
         }
         lemonImage!!.setOnLongClickListener {
+            showSnackbar()
             // TODO: replace 'false' with a call to the function that shows the squeeze count
-            false
+            // false
         }
     }
 
@@ -96,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         //  lemonade making progression (or at least make some changes to the current state in the
         //  case of squeezing the lemon). That should be done in this conditional statement
 
+
         // TODO: When the image is clicked in the SELECT state, the state should become SQUEEZE
         //  - The lemonSize variable needs to be set using the 'pick()' method in the LemonTree class
         //  - The squeezeCount should be 0 since we haven't squeezed any lemons just yet.
@@ -111,6 +115,28 @@ class MainActivity : AppCompatActivity() {
 
         // TODO: lastly, before the function terminates we need to set the view elements so that the
         //  UI can reflect the correct state
+
+        when(lemonadeState) {
+            "select" -> {
+                lemonSize = lemonTree.pick()
+                squeezeCount = 0
+                lemonadeState = SQUEEZE
+            }
+            "squeeze" -> {
+                if(lemonSize == 0) {
+                    lemonadeState = DRINK
+                }
+                squeezeCount += 1
+                lemonSize -= 1
+            }
+            "drink" -> {
+                lemonadeState = RESTART
+                lemonSize = -1
+            }
+            "restart" -> {
+                lemonadeState = SELECT
+            }
+        }
     }
 
     /**
@@ -126,6 +152,26 @@ class MainActivity : AppCompatActivity() {
         // TODO: Additionally, for each state, the lemonImage should be set to the corresponding
         //  drawable from the drawable resources. The drawables have the same names as the strings
         //  but remember that they are drawables, not strings.
+
+        when(lemonadeState) {
+            "select" -> {
+                textAction.text = "クリックしてレモンを選択して下さい。"
+                lemonImage?.setImageResource(R.drawable.lemon_tree)
+            }
+            "squeeze" -> {
+                textAction.text = "クリックしてレモンを絞ってください。"
+                lemonImage?.setImageResource(R.drawable.lemon_squeeze)
+            }
+            "drink" -> {
+                textAction.text = "クリックしてレモネードを飲んでください。"
+                lemonImage?.setImageResource(R.drawable.lemon_drink)
+            }
+            "restart" -> {
+                textAction.text = "クリックして最初からやり直してください。"
+                lemonImage?.setImageResource(R.drawable.lemon_restart)
+            }
+
+        }
     }
 
     /**
